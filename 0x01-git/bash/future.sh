@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "Train-Your-Hands-And-Your-Brain"
+echo "Train-Your-Hands-And-Your-Brain Project"
