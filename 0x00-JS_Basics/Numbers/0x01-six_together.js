@@ -7,5 +7,5 @@ let num6 = 12;
 
 let sum = num1 + num2 + num3 + num4 + num5 + num6;
 
-console.log(sum); // Output: 42
+console.log(sum);
 
