@@ -3,8 +3,7 @@ function troubleshooting() {
     const b = 1;
   
     let result;
-  
-    // Add the values of a and b
+ 
     result = a + b;
   
     return result;
