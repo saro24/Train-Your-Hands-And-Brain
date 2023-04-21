@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+  
+  </head>
+  <body>
+    <style>
+      body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: blanchedalmond;
+}
+
+.calculator {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  width: 300px;
+  background-color: #e6e6e6;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.calculator input {
+  width: 100%;
+  height: 60px;
+  padding: 10px;
+  font-size: 24px;
+  text-align: right;
+  border: none;
+  outline: none;
+  background-color: #f5f5f5;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.calculator button {
+  width: 25%;
+  height: 60px;
+  font-size: 24px;
+  border: none;
+  outline: none;
+  background-color: burlywood;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.calculator button:hover {
+  background-color: #ccc;
+}
+
+.operator {
+  background-color: #f5a623;
+  color: #fff;
+}
+
+.operator:hover {
+  background-color: #d48611;
+}
+
+.calculator button:last-child {
+  background-color: #f5a623;
+  color: #fff;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+    </style>
+    <div class="calculator">
+      <input type="text" id="display" disabled>
+      <button class="operator" onclick="clearDisplay()">C</button>
+      <button class="operator" onclick="backspace()">&#8592;</button>
+      <button class="operator" onclick="addToDisplay('/')">÷</button>
+      <button onclick="addToDisplay('7')">7</button>
+      <button onclick="addToDisplay('8')">8</button>
+      <button onclick="addToDisplay('9')">9</button>
+      <button class="operator" onclick="addToDisplay('*')">x</button>
+      <button onclick="addToDisplay('4')">4</button>
+      <button onclick="addToDisplay('5')">5</button>
+      <button onclick="addToDisplay('6')">6</button>
+      <button class="operator" onclick="addToDisplay('-')">-</button>
+      <button onclick="addToDisplay('1')">1</button>
+      <button onclick="addToDisplay('2')">2</button>
+      <button onclick="addToDisplay('3')">3</button>
+      <button class="operator" onclick="addToDisplay('+')">+</button>
+      <button onclick="addToDisplay('0')">0</button>
+      <button onclick="addToDisplay('.')">.</button>
+      <button class="operator" onclick="calculate()">=</button>
+    </div>
+    <script>
+      let calculation = ""; // Initialize the calculation variable
+
+// Function to add a value to the display
+function addToDisplay(value) {
+  calculation += value; // Add the value to the calculation variable
+  document.getElementById("display").value = calculation; // Display the calculation
+}
+
+// Function to clear the display
+function clearDisplay() {
+  calculation = ""; // Clear the calculation variable
+  document.getElementById("display").value = ""; // Clear the display
+}
+
+// Function to remove the last character from the display
+function backspace() {
+  calculation = calculation.slice(0, -1); // Remove the last character from the calculation variable
+  document.getElementById("display").value = calculation; // Update the display
+}
+
+// Function to perform the calculation
+function calculate() {
+  let result = eval(calculation); // Evaluate the calculation using the eval() function
+  document.getElementById("display").value = result; // Display the result
+  calculation = result.toString(); // Store the result in the calculation variable
+}
+
+    </script>
+  </body>
+</html>

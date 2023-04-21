@@ -1,0 +1,171 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Etch-a-Sketch</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <style>
+    /* style for h1 tag */
+h1 {
+  font-size: 2.5em;
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* style for label tag */
+label {
+  font-size: 1.2em;
+  color: #666;
+  margin-right: 10px;
+}
+
+/* style for input type color */
+input[type="color"] {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+/* style for button tags */
+button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+/* style for canvas tag */
+canvas {
+  border: 1px solid #999;
+}
+
+  </style>
+  <h1>Etch-a-Sketch</h1>
+  <center>
+ <div>
+  <label for="color-picker">Choose a color:</label>
+  <input type="color" id="color-picker">
+</div>
+<div>
+  <button id="eraser-button">Eraser</button>
+  <button id="pencil-button">Pencil</button>
+  <button id="marker-button">Marker</button>
+</div>
+<div>
+  <button id="undo-button">Undo</button>
+  <button id="redo-button">Redo</button>
+</div>
+<canvas id="canvas" width="400" height="400"></canvas>
+</center>
+
+  <script>
+  const canvas = document.getElementById('canvas');
+const context = canvas.getContext('2d');
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+let currentColor = '#000000';
+let currentTool = 'pencil';
+const undoStack = [];
+const redoStack = [];
+
+function drawLine(x1, y1, x2, y2) {
+context.beginPath();
+context.moveTo(x1, y1);
+context.lineTo(x2, y2);
+context.strokeStyle = currentColor;
+context.lineWidth = currentTool === 'marker' ? 5 : 1;
+context.stroke();
+context.closePath();
+}
+
+function startDrawing(event) {
+isDrawing = true;
+lastX = event.offsetX;
+lastY = event.offsetY;
+}
+
+function continueDrawing(event) {
+if (!isDrawing) return;
+const currentX = event.offsetX;
+const currentY = event.offsetY;
+drawLine(lastX, lastY, currentX, currentY);
+lastX = currentX;
+lastY = currentY;
+}
+
+function stopDrawing() {
+isDrawing = false;
+undoStack.push(canvas.toDataURL());
+redoStack.length = 0;
+}
+
+function undo() {
+if (undoStack.length <= 1) return;
+redoStack.push(undoStack.pop());
+const img = new Image();
+img.onload = function() {
+context.clearRect(0, 0, canvas.width, canvas.height);
+context.drawImage(img, 0, 0);
+};
+img.src = undoStack[undoStack.length - 1];
+}
+
+function redo() {
+if (redoStack.length === 0) return;
+undoStack.push(redoStack.pop());
+const img = new Image();
+img.onload = function() {
+context.clearRect(0, 0, canvas.width, canvas.height);
+context.drawImage(img, 0, 0);
+};
+img.src = undoStack[undoStack.length - 1];
+}
+
+function setCanvasSize(size) {
+canvas.width = size;
+canvas.height = size;
+context.clearRect(0, 0, canvas.width, canvas.height);
+undoStack.length = 0;
+redoStack.length = 0;
+}
+
+document.getElementById('color-picker').addEventListener('change', function(event) {
+currentColor = event.target.value;
+});
+
+document.getElementById('eraser-button').addEventListener('click', function() {
+currentTool = 'eraser';
+currentColor = '#FFFFFF';
+});
+
+document.getElementById('pencil-button').addEventListener('click', function() {
+currentTool = 'pencil';
+currentColor = '#000000';
+});
+
+document.getElementById('marker-button').addEventListener('click', function() {
+currentTool = 'marker';
+currentColor = '#FF0000';
+});
+
+document.getElementById('undo-button').addEventListener('click', undo);
+
+document.getElementById('redo-button').addEventListener('click', redo);
+
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', continueDrawing);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mouseout', stopDrawing);
+
+  </script>
+</body>
+</html>
